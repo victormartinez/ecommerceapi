@@ -8,6 +8,7 @@ MIDDLEWARES = [
 ]
 
 EXTENSIONS = [
+    "ecommerce_api.ext.database:init_app",
 ]
 
 BLUEPRINTS = [
@@ -16,3 +17,4 @@ BLUEPRINTS = [
 ]
 
 API_LIST_KEYS = config("API_LIST_KEYS")
+DATABASE_FILENAME = config("DATABASE_FILENAME")
