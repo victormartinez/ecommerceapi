@@ -1,0 +1,9 @@
+Flask==1.1.2
+Flask-RESTful==0.3.8
+Flask-Script==2.0.6
+grpcio==1.38.0
+grpcio-tools==1.38.0
+marshmallow==3.12.1
+python-decouple==3.4
+pytz
+protobuf==3.17.3

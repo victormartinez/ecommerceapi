@@ -1,0 +1,20 @@
+version: '3'
+services:
+  ecommerce_api_web_testing:
+    build:
+      context: .
+      dockerfile: Dockerfile.testing
+    env_file:
+      - env/testing.env
+    command: flask run --host=0.0.0.0
+    volumes:
+      - .:/code
+    ports:
+      - "5001:5000"
+    depends_on:
+      - hash_mock_discount_service_testing
+
+    hash_mock_discount_service_testing:
+      image: hashorg/hash-mock-discount-service
+      ports:
+        - "50051:50051"
