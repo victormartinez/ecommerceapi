@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from decouple import config
 
 FLASK_APP = config("FLASK_APP")
@@ -20,3 +22,4 @@ API_LIST_KEYS = config("API_LIST_KEYS")
 DATABASE_FILENAME = config("DATABASE_FILENAME")
 DISCOUNT_SERVICE_HOST = config("DISCOUNT_SERVICE_HOST")
 DISCOUNT_SERVICE_PORT = config("DISCOUNT_SERVICE_PORT")
+BLACK_FRIDAY_DATE = datetime.strptime(config("BLACK_FRIDAY_DATE"), '%Y-%m-%d').date()
