@@ -4,7 +4,6 @@ from .interfaces import AbstractRepository
 
 
 class ProductRepository(AbstractRepository):
-
     def __init__(self, db: List[Dict]):
         self._db = db
 

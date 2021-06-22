@@ -12,7 +12,6 @@ from ecommerce_api.repositories import ProductRepository
 
 
 class CartResource(Resource):
-
     def post(self, *args, **kwargs):
         success, data_or_exc = parse_payload(request)
         if not success:
@@ -25,7 +24,9 @@ class CartResource(Resource):
 
     def _process_cart(self, products_data):
         try:
-            discount_client = DiscountClient(settings.DISCOUNT_SERVICE_HOST, settings.DISCOUNT_SERVICE_PORT)
+            discount_client = DiscountClient(
+                settings.DISCOUNT_SERVICE_HOST, settings.DISCOUNT_SERVICE_PORT
+            )
             context = Context(
                 product_repository=ProductRepository(db),
                 discount_client=discount_client,
@@ -38,7 +39,7 @@ class CartResource(Resource):
                 400,
                 code=ResponseCode.PRODUCTS_NOT_FOUND.value,
                 message=exc.message,
-                data={"ids": exc.product_ids}
+                data={"ids": exc.product_ids},
             )
         except Exception as exc:
             return create_response(

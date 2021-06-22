@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from datetime import date
-from typing import List, Dict
+from typing import List
 
 from ..discount.interfaces import AbstractDiscountClient
 from ...repositories.interfaces import AbstractRepository

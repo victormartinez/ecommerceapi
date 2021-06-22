@@ -8,7 +8,6 @@ from .discount_pb2_grpc import DiscountStub
 
 
 class DiscountClient(AbstractDiscountClient):
-
     def __init__(self, host, port):
         self.url = f"{host}:{port}"
 

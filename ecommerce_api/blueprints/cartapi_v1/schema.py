@@ -17,4 +17,6 @@ class ProductSchema(Schema):
 
 class ProductsCartSchema(Schema):
 
-    products = fields.List(fields.Nested(ProductSchema), validate=validate.Length(min=1))
+    products = fields.List(
+        fields.Nested(ProductSchema), validate=validate.Length(min=1)
+    )

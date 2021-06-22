@@ -3,7 +3,6 @@ from typing import List, Dict
 
 
 class AbstractRepository(ABC):
-
     @abstractmethod
     def all(self) -> List[Dict]:
         pass

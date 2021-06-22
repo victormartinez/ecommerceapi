@@ -6,11 +6,12 @@ from .interfaces import Context, CartProduct, CartStep
 
 
 class DiscountStep(CartStep):
-
     def apply(self) -> List[CartProduct]:
         ids = [p.id for p in self.cart_products]
         discounts = {
-            idx: self.context.discount_client.get_discount_percentage(product_id=idx)
+            idx: self.context.discount_client.get_discount_percentage(
+                product_id=idx
+            )
             for idx in ids
         }
         if not discounts:
@@ -26,33 +27,32 @@ class DiscountStep(CartStep):
 
 
 class BlackFridayStep(CartStep):
-
     def apply(self) -> List[CartProduct]:
         if not self._is_black_friday():
             return self.cart_products
 
-        gift_products = (
-            self.context
-                .product_repository
-                .filter_by({"is_gift": True})
+        gift_products = self.context.product_repository.filter_by(
+            {"is_gift": True}
         )
         if not gift_products:
             return self.cart_products
 
-        gift = CartProduct(**{
-            "id": gift_products[0]["id"],
-            "quantity": 1,
-            "unit_amount": 0,
-            "total_amount": 0,
-            "discount": 0,
-            "is_gift": True,
-        })
+        gift = CartProduct(
+            **{
+                "id": gift_products[0]["id"],
+                "quantity": 1,
+                "unit_amount": 0,
+                "total_amount": 0,
+                "discount": 0,
+                "is_gift": True,
+            }
+        )
         return self.cart_products + [gift]
 
     def _is_black_friday(self):
         bf_day, bf_month = (
             self.context.black_friday_date.day,
-            self.context.black_friday_date.month
+            self.context.black_friday_date.month,
         )
         today_day, today_month = date.today().day, date.today().month
         return (bf_day == today_day) and (bf_month == today_month)
@@ -80,21 +80,22 @@ class GiftProductStep(CartStep):
             if p.is_gift:
                 p.quantity = 1
                 gift_products.append(p)
-        return gift_products[:self.GIFT_LIMIT]
+        return gift_products[: self.GIFT_LIMIT]
 
 
 class CartPipeline:
-
     def __init__(
         self,
         cart_products: List[Dict],
         context: Context,
     ):
-        """"
+        """ "
         raises:
             ProductsNotFound
         """
-        self.cart_products = dict_to_products(cart_products, context.product_repository)
+        self.cart_products = dict_to_products(
+            cart_products, context.product_repository
+        )
         self.context = context
         self.steps = (
             DiscountStep,

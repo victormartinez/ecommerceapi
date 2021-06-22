@@ -10,4 +10,3 @@ api = Api(bp)
 def init_app(app):
     api.add_resource(CartResource, "/")
     app.register_blueprint(bp)
-
