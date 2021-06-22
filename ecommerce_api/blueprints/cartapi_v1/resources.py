@@ -40,3 +40,9 @@ class CartResource(Resource):
                 message=exc.message,
                 data={"ids": exc.product_ids}
             )
+        except Exception as exc:
+            return create_response(
+                400,
+                code=ResponseCode.CART_PROCESSING_ERROR.value,
+                message=str(exc),
+            )
