@@ -1,0 +1,2 @@
+[flake8]
+exclude = ecommerce_api/core/discount/discount_pb2_grpc.py,ecommerce_api/core/discount/discount_pb2.py
