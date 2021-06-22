@@ -107,4 +107,13 @@ class CartPipeline:
         products = self.cart_products
         for Step in self.steps:
             products = Step(self.context, products).apply()
-        return {"products": products}
+
+        total_amount = sum([p.total_amount for p in products])
+        total_discount = sum([p.discount for p in products])
+        total_amount_with_discount = total_amount - total_discount
+        return {
+            "total_amount": total_amount,
+            "total_amount_with_discount": total_amount_with_discount,
+            "total_discount": total_discount,
+            "products": products,
+        }
