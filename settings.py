@@ -15,7 +15,7 @@ EXTENSIONS = [
 
 BLUEPRINTS = [
     "ecommerce_api.blueprints.baseapi_v1:init_app",
-    "ecommerce_api.blueprints.chartapi_v1:init_app",
+    "ecommerce_api.blueprints.cartapi_v1:init_app",
 ]
 
 API_LIST_KEYS = config("API_LIST_KEYS")

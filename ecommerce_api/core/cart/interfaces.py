@@ -7,7 +7,7 @@ from ..discount.interfaces import AbstractDiscountClient
 
 
 @dataclass(frozen=False)
-class ChartProduct:
+class CartProduct:
     id: int
     quantity: int
     unit_amount: int
@@ -18,15 +18,15 @@ class ChartProduct:
 
 @dataclass(frozen=True)
 class Context:
-    chart_products: List[ChartProduct]
+    cart_products: List[CartProduct]
     discount_client: AbstractDiscountClient
     black_friday_date: date
 
 
-class ChartStep(ABC):
+class CartStep(ABC):
     def __init__(self, context: Context):
         self.context = context
 
     @abstractmethod
-    def apply(self) -> List[ChartProduct]:
+    def apply(self) -> List[CartProduct]:
         pass

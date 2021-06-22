@@ -1,10 +1,10 @@
 from typing import List, Dict
 
 from .exceptions import ProductsNotFound
-from .interfaces import ChartProduct
+from .interfaces import CartProduct
 
 
-def dict_to_products(requested_products: List[Dict], product_repository) -> List[ChartProduct]:
+def dict_to_products(requested_products: List[Dict], product_repository) -> List[CartProduct]:
     requested_ids = list(map(lambda x: x["id"], requested_products))
     invalid_ids = product_repository.get_invalid_ids(requested_ids)
     if invalid_ids:
@@ -15,7 +15,7 @@ def dict_to_products(requested_products: List[Dict], product_repository) -> List
 
     # TODO: e se não tiver o id no banco?
     return [
-        ChartProduct(**{
+        CartProduct(**{
             "id": p["id"],
             "quantity": p["quantity"],
             "unit_amount": products[p["id"]]["amount"],

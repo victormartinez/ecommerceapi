@@ -1,20 +1,20 @@
 from typing import List, Dict
 
-from .interfaces import Context, ChartProduct, ChartStep
+from .interfaces import Context, CartProduct, CartStep
 
 
-class DiscountStep(ChartStep):
+class DiscountStep(CartStep):
 
-    def apply(self) -> List[ChartProduct]:
-        ids = [p.id for p in self.context.chart_products]
+    def apply(self) -> List[CartProduct]:
+        ids = [p.id for p in self.context.cart_products]
         discounts = {
             idx: self.context.discount_client.get_discount_percentage(product_id=idx)
             for idx in ids
         }
         if not discounts:
-            return self.context.chart_products
+            return self.context.cart_products
 
-        products = self.context.chart_products
+        products = self.context.cart_products
         for p in products:
             percentage = discounts.get(p.id)
             if p.id in discounts and percentage:
@@ -27,19 +27,19 @@ class DiscountStep(ChartStep):
         return products
 
 
-class BlackFridayStep(ChartStep):
+class BlackFridayStep(CartStep):
 
-    def apply(self) -> List[ChartProduct]:
-        return self.context.chart_products
-
-
-class GiftProductStep(ChartStep):
-
-    def apply(self) -> List[ChartProduct]:
-        return self.context.chart_products
+    def apply(self) -> List[CartProduct]:
+        return self.context.cart_products
 
 
-class ChartPipeline:
+class GiftProductStep(CartStep):
+
+    def apply(self) -> List[CartProduct]:
+        return self.context.cart_products
+
+
+class CartPipeline:
 
     def __init__(self, context: Context):
         self.context = context
@@ -50,7 +50,7 @@ class ChartPipeline:
         )
 
     def process(self) -> Dict:
-        products = self.context.chart_products
+        products = self.context.cart_products
         for Step in self.steps:
             products = Step(self.context).apply()
         return {"products": products}
