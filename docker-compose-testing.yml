@@ -14,7 +14,5 @@ services:
     depends_on:
       - hash_mock_discount_service_testing
 
-    hash_mock_discount_service_testing:
-      image: hashorg/hash-mock-discount-service
-      ports:
-        - "50051:50051"
+  hash_mock_discount_service_testing:
+    image: hashorg/hash-mock-discount-service
