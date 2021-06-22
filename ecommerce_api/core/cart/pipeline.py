@@ -67,9 +67,20 @@ class GiftProductStep(CartStep):
         if gift_count <= self.GIFT_LIMIT:
             return self.cart_products
 
-        not_gift = [p for p in self.cart_products if not p.is_gift]
-        gift_products = [p for p in self.cart_products if p.is_gift]
-        return not_gift + gift_products[:self.GIFT_LIMIT]
+        not_gift = self._get_not_gift_products()
+        gift_products = self._get_gift_products()
+        return not_gift + gift_products
+
+    def _get_not_gift_products(self):
+        return [p for p in self.cart_products if not p.is_gift]
+
+    def _get_gift_products(self):
+        gift_products = []
+        for p in self.cart_products:
+            if p.is_gift:
+                p.quantity = 1
+                gift_products.append(p)
+        return gift_products[:self.GIFT_LIMIT]
 
 
 class CartPipeline:
