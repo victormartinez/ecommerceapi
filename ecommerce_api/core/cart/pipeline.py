@@ -1,3 +1,4 @@
+from datetime import date
 from typing import List, Dict
 
 from .adapters import dict_to_products
@@ -31,13 +32,48 @@ class DiscountStep(CartStep):
 class BlackFridayStep(CartStep):
 
     def apply(self) -> List[CartProduct]:
-        return self.cart_products
+        if not self._is_black_friday():
+            return self.cart_products
+
+        gift_products = (
+            self.context
+                .product_repository
+                .filter_by({"is_gift": True})
+        )
+        if not gift_products:
+            return self.cart_products
+
+        gift = CartProduct(**{
+            "id": gift_products[0]["id"],
+            "quantity": 1,
+            "unit_amount": 0,
+            "total_amount": 0,
+            "discount": 0,
+            "is_gift": True,
+        })
+        return self.cart_products + [gift]
+
+    def _is_black_friday(self):
+        bf_day, bf_month = (
+            self.context.black_friday_date.day,
+            self.context.black_friday_date.month
+        )
+        today_day, today_month = date.today().day, date.today().month
+        return (bf_day == today_day) and (bf_month == today_month)
 
 
 class GiftProductStep(CartStep):
 
+    GIFT_LIMIT = 1
+
     def apply(self) -> List[CartProduct]:
-        return self.cart_products
+        gift_count = sum([1 if p.is_gift else 0 for p in self.cart_products])
+        if gift_count <= self.GIFT_LIMIT:
+            return self.cart_products
+
+        not_gift = [p for p in self.cart_products if not p.is_gift]
+        gift_products = [p for p in self.cart_products if p.is_gift]
+        return not_gift + gift_products[:self.GIFT_LIMIT]
 
 
 class CartPipeline:
