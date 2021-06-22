@@ -37,4 +37,4 @@ test_cov:
 	docker-compose -f docker-compose-testing.yml run --rm ecommerce_api_web_testing pytest --cov-report html:cov_html --cov=ecommerce_api -v ecommerce_api/tests/
 
 proto:
-	python -m grpc_tools.protoc --python_out=ecommerce_api/services/discount/ --grpc_python_out=ecommerce_api/services/discount/ --proto_path=ecommerce_api/services/discount/proto/ ecommerce_api/services/discount/proto/*.proto
+	python -m grpc_tools.protoc --python_out=ecommerce_api/core/discount/ --grpc_python_out=ecommerce_api/core/discount/ --proto_path=ecommerce_api/core/discount/proto/ ecommerce_api/core/discount/proto/*.proto
