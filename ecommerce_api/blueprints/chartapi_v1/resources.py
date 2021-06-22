@@ -2,9 +2,10 @@ from flask import request
 from flask_restful import Resource
 
 from ecommerce_api.constants import ResponseCode
+from ecommerce_api.ext.database import db
+from ecommerce_api.repositories import ProductRepository
 from ecommerce_api.blueprints.presenter import create_response, exc_to_str
 from ecommerce_api.blueprints.chartapi_v1.schema import parse_payload
-from ecommerce_api.repositories import ProductRepository
 
 
 class ChartResource(Resource):
@@ -18,8 +19,9 @@ class ChartResource(Resource):
                 message=exc_to_str(data_or_exc),
             )
 
+        product_repository = ProductRepository(db)
         requested_ids = [d["id"] for d in data_or_exc["products"]]
-        invalid_ids = ProductRepository.get_invalid_ids(requested_ids)
+        invalid_ids = product_repository.get_invalid_ids(requested_ids)
         if invalid_ids:
             return create_response(
                 400,

@@ -1,15 +1,14 @@
 from typing import List, Dict
 
-from ecommerce_api.ext.database import db
-
 
 class ProductRepository:
 
-    @staticmethod
-    def filter_by_id(ids: List[int]) -> List[Dict]:
-        return list(filter(lambda x: x["id"] in ids, db))
+    def __init__(self, db: List[Dict]):
+        self.db = db
 
-    @staticmethod
-    def get_invalid_ids(ids: List[int]) -> List[int]:
-        product_ids = list(map(lambda x: x["id"], db))
+    def filter_by_id(self, ids: List[int]) -> List[Dict]:
+        return list(filter(lambda x: x["id"] in ids, self.db))
+
+    def get_invalid_ids(self, ids: List[int]) -> List[int]:
+        product_ids = list(map(lambda x: x["id"], self.db))
         return [i for i in ids if i not in product_ids]
