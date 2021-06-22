@@ -2,11 +2,12 @@ from typing import Optional
 
 import grpc
 
+from .interfaces import AbstractDiscountClient
 from .discount_pb2 import GetDiscountRequest
 from .discount_pb2_grpc import DiscountStub
 
 
-class DiscountClient:
+class DiscountClient(AbstractDiscountClient):
 
     def __init__(self, host, port, cred=None):
         self.url = f"{host}:{port}"
