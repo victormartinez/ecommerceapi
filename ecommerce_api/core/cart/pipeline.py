@@ -20,11 +20,7 @@ class DiscountStep(CartStep):
         for p in products:
             percentage = discounts.get(p.id)
             if p.id in discounts and percentage:
-                # TODO: fix percentage
-                print("*" * 10)
-                print(percentage)
-                print("*" * 10)
-                p.discount = percentage * p.total_amount
+                p.discount = round(percentage * p.total_amount)
 
         return products
 

@@ -22,6 +22,6 @@ class DiscountClient(AbstractDiscountClient):
                 result = stub.GetDiscount(
                     GetDiscountRequest(productID=product_id)
                 )
-                return result.percentage
+                return float("{:.2f}".format(result.percentage))
         except grpc.RpcError:
             return None
