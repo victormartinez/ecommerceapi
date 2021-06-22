@@ -19,7 +19,11 @@ BLUEPRINTS = [
 ]
 
 API_LIST_KEYS = config("API_LIST_KEYS")
+DATE_FORMAT = "%Y-%m-%d"
 DATABASE_FILENAME = config("DATABASE_FILENAME")
 DISCOUNT_SERVICE_HOST = config("DISCOUNT_SERVICE_HOST")
 DISCOUNT_SERVICE_PORT = config("DISCOUNT_SERVICE_PORT")
-BLACK_FRIDAY_DATE = datetime.strptime(config("BLACK_FRIDAY_DATE"), '%Y-%m-%d').date()
+BLACK_FRIDAY_DATE = config(
+    "BLACK_FRIDAY_DATE",
+    cast=lambda x: datetime.strptime(x, DATE_FORMAT).date()
+)
