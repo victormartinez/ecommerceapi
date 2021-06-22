@@ -9,13 +9,10 @@ from .discount_pb2_grpc import DiscountStub
 
 class DiscountClient(AbstractDiscountClient):
 
-    def __init__(self, host, port, cred=None):
+    def __init__(self, host, port):
         self.url = f"{host}:{port}"
-        self.cred = cred
 
     def get_discount_percentage(self, product_id: int) -> Optional[float]:
-        # TODO: secure channel?
-        # TODO: error handling
         try:
             with grpc.insecure_channel(self.url) as channel:
                 stub = DiscountStub(channel)
