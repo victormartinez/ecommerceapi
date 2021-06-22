@@ -1,14 +1,19 @@
 from typing import List, Dict
 
+from .interfaces import AbstractRepository
 
-class ProductRepository:
+
+class ProductRepository(AbstractRepository):
 
     def __init__(self, db: List[Dict]):
-        self.db = db
+        self._db = db
 
-    def filter_by_ids(self, ids: List[int]) -> List[Dict]:
-        return list(filter(lambda x: x["id"] in ids, self.db))
+    def all(self) -> List[Dict]:
+        return self._db
 
-    def get_invalid_ids(self, ids: List[int]) -> List[int]:
-        product_ids = list(map(lambda x: x["id"], self.db))
-        return [i for i in ids if i not in product_ids]
+    def filter_by(self, kv: Dict) -> List[Dict]:
+        k, v = kv.popitem()
+        return [p for p in self.all() if p[k] == v]
+
+    def find_by_ids(self, ids: List[int]) -> List[Dict]:
+        return list(filter(lambda x: x["id"] in ids, self.all()))

@@ -4,12 +4,7 @@ from flask_restful import Resource
 import settings
 from ecommerce_api.constants import ResponseCode
 from ecommerce_api.core.discount import DiscountClient
-from ecommerce_api.core.cart import (
-    CartPipeline,
-    Context,
-    dict_to_products,
-    exceptions,
-)
+from ecommerce_api.core.cart import CartPipeline, Context, exceptions
 from ecommerce_api.ext.database import db
 from ecommerce_api.repositories import ProductRepository
 from ecommerce_api.blueprints.presenter import create_response, exc_to_str
@@ -26,18 +21,17 @@ class CartResource(Resource):
                 code=ResponseCode.INVALID_PAYLOAD.value,
                 message=exc_to_str(data_or_exc),
             )
-
         return self._process_cart(data_or_exc["products"])
 
     def _process_cart(self, products_data):
         try:
             discount_client = DiscountClient(settings.DISCOUNT_SERVICE_HOST, settings.DISCOUNT_SERVICE_PORT)
-            cart_products = dict_to_products(products_data, ProductRepository(db))
-            data = CartPipeline(Context(
-                cart_products=cart_products,
+            context = Context(
+                product_repository=ProductRepository(db),
                 discount_client=discount_client,
                 black_friday_date=settings.BLACK_FRIDAY_DATE,
-            )).process()
+            )
+            data = CartPipeline(products_data, context).process()
             return create_response(200, data=data)
         except exceptions.ProductsNotFound as exc:
             return create_response(
