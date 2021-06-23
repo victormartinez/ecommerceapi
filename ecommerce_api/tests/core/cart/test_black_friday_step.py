@@ -18,14 +18,16 @@ def test__blackfriday_step__add_gift(db, cart_products):
     step = BlackFridayStep(context, cart_products)
     result_products = step.apply()
     assert result_products == cart_products + [
-        CartProduct(**{
-            "id": 6,
-            "quantity": 1,
-            "unit_amount": 0,
-            "total_amount": 0,
-            "discount": 0,
-            "is_gift": True
-        })
+        CartProduct(
+            **{
+                "id": 6,
+                "quantity": 1,
+                "unit_amount": 0,
+                "total_amount": 0,
+                "discount": 0,
+                "is_gift": True,
+            }
+        )
     ]
 
 

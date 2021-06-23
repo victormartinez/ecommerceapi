@@ -61,7 +61,9 @@ class GiftProductStep(CartStep):
     GIFT_LIMIT = 1
 
     def apply(self) -> List[CartProduct]:
-        gift_count = sum([p.quantity if p.is_gift else 0 for p in self.cart_products])
+        gift_count = sum(
+            [p.quantity if p.is_gift else 0 for p in self.cart_products]
+        )
         if gift_count <= self.GIFT_LIMIT:
             return self.cart_products
 

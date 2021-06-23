@@ -28,7 +28,7 @@ def test__full__pipeline(db):
                 "unit_amount": 15157,
                 "total_amount": 30314,
                 "discount": 15157,
-                "is_gift": False
+                "is_gift": False,
             },
             {
                 "id": 2,
@@ -36,7 +36,7 @@ def test__full__pipeline(db):
                 "unit_amount": 93811,
                 "total_amount": 93811,
                 "discount": 46906,
-                "is_gift": False
+                "is_gift": False,
             },
             {
                 "id": 6,
@@ -44,7 +44,7 @@ def test__full__pipeline(db):
                 "unit_amount": 0,
                 "total_amount": 0,
                 "discount": 0,
-                "is_gift": True
-            }
+                "is_gift": True,
+            },
         ],
     }

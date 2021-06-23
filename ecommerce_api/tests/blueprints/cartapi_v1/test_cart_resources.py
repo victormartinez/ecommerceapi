@@ -22,20 +22,22 @@ def test__post_cart__invalid_payload(app, apikey):
             "code": "invalid_payload",
             "data": None,
             "message": "{'products': ['Missing data for required field.']}",
-            "success": False
+            "success": False,
         }
 
 
-@mock.patch("ecommerce_api.blueprints.cartapi_v1.resources.DiscountClient.get_discount_percentage")
+@mock.patch(
+    (
+        "ecommerce_api.blueprints.cartapi_v1.resources"
+        ".DiscountClient.get_discount_percentage"
+    )
+)
 def test__post_cart__success(discount_mock, app, apikey):
     discount_mock.return_value = 0.0
 
     with app.test_client() as client:
         data = {
-            "products": [
-                {"id": 1, "quantity": 2},
-                {"id": 2, "quantity": 2}
-            ]
+            "products": [{"id": 1, "quantity": 2}, {"id": 2, "quantity": 2}]
         }
         response = _post_request(client, data, apikey)
         assert response == 200
@@ -54,30 +56,32 @@ def test__post_cart__success(discount_mock, app, apikey):
                         "is_gift": False,
                         "quantity": 2,
                         "total_amount": 30314,
-                        "unit_amount": 15157
-                     },
+                        "unit_amount": 15157,
+                    },
                     {
                         "discount": 0,
                         "id": 2,
                         "is_gift": False,
                         "quantity": 2,
                         "total_amount": 187622,
-                        "unit_amount": 93811
-                    }
+                        "unit_amount": 93811,
+                    },
                 ],
             },
         }
 
 
-@mock.patch("ecommerce_api.blueprints.cartapi_v1.resources.DiscountClient.get_discount_percentage")
+@mock.patch(
+    (
+        "ecommerce_api.blueprints.cartapi_v1.resources"
+        ".DiscountClient.get_discount_percentage"
+    )
+)
 def test__post_cart__success_with_discount(discount_mock, app, apikey):
     discount_mock.return_value = 0.5
     with app.test_client() as client:
         data = {
-            "products": [
-                {"id": 1, "quantity": 2},
-                {"id": 2, "quantity": 2}
-            ]
+            "products": [{"id": 1, "quantity": 2}, {"id": 2, "quantity": 2}]
         }
         response = _post_request(client, data, apikey)
         assert response == 200
@@ -96,16 +100,16 @@ def test__post_cart__success_with_discount(discount_mock, app, apikey):
                         "is_gift": False,
                         "quantity": 2,
                         "total_amount": 30314,
-                        "unit_amount": 15157
-                     },
+                        "unit_amount": 15157,
+                    },
                     {
                         "discount": 93811,
                         "id": 2,
                         "is_gift": False,
                         "quantity": 2,
                         "total_amount": 187622,
-                        "unit_amount": 93811
-                    }
+                        "unit_amount": 93811,
+                    },
                 ],
             },
         }
