@@ -9,9 +9,7 @@ class DiscountStep(CartStep):
     def apply(self) -> List[CartProduct]:
         ids = [p.id for p in self.cart_products]
         discounts = {
-            idx: self.context.discount_client.get_discount_percentage(
-                product_id=idx
-            )
+            idx: self.context.discount_client.get_discount_percentage(idx)
             for idx in ids
         }
         if not discounts:
@@ -63,7 +61,7 @@ class GiftProductStep(CartStep):
     GIFT_LIMIT = 1
 
     def apply(self) -> List[CartProduct]:
-        gift_count = sum([1 if p.is_gift else 0 for p in self.cart_products])
+        gift_count = sum([p.quantity if p.is_gift else 0 for p in self.cart_products])
         if gift_count <= self.GIFT_LIMIT:
             return self.cart_products
 
@@ -115,5 +113,5 @@ class CartPipeline:
             "total_amount": total_amount,
             "total_amount_with_discount": total_amount_with_discount,
             "total_discount": total_discount,
-            "products": products,
+            "products": [p.to_dict() for p in products],
         }

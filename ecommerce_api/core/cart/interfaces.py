@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from datetime import date
 from typing import List
 
@@ -15,6 +15,9 @@ class CartProduct:
     total_amount: int
     discount: int
     is_gift: bool
+
+    def to_dict(self):
+        return asdict(self)
 
 
 @dataclass(frozen=True)
